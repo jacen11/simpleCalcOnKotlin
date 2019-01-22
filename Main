@@ -1,0 +1,54 @@
+import java.beans.Expression
+import java.lang.StringBuilder
+
+fun main(args: Array<String>) {
+
+    //println(toStartCalculation(readLine()!!))
+    val str = "1+1*1-6/2 "
+    println(str)
+    println(toStartCalculation(str))
+    val str2 = "1+1*1-6/2="
+    println(str2)
+    println(toStartCalculation(str2))
+    val message = 1 + 1 * 1.2 + 1
+    println(message)
+    val s = "1+1*1.2+1"
+    s.map { it.toDouble() }
+    val sb:StringBuilder
+    
+    println(2+6)
+}
+
+fun toStartCalculation(str: String) =
+    if (str.takeLast(1).contains(Regex("[^\\d]"))) sumAndSub(str.dropLast(1)) else sumAndSub(str)
+
+private fun sumAndSub(str: String): Double {
+    val numbers = str.split(Regex("[+,-]"))
+        .map { multAndDiv(it) }
+    val sign = str.split(Regex("[^+||^-]")).filter { it.isNotEmpty() }
+    var result = numbers[0]
+
+    sign.forEachIndexed { index, it ->
+        when (it) {
+            "+" -> result += numbers[index + 1]
+            "-" -> result -= numbers[index + 1]
+        }
+    }
+    return result
+}
+
+fun multAndDiv(string: String): Double {
+    val numbers = string.split(Regex("[*,/]")).map { it.toDouble() }
+    val sign = string.split(Regex("[^/||^*]")).filter { it.isNotEmpty() }
+    var result = numbers[0]
+
+    sign.forEachIndexed { index, it ->
+        when (it) {
+            "*" -> result *= numbers[index + 1]
+            "/" -> result /= numbers[index + 1]//}
+        }
+    }
+    return result
+
+}
+
